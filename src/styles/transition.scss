@@ -46,3 +46,18 @@
 .breadcrumb-leave-active {
   position: absolute;
 }
+
+/* attr-transition */
+.attr-transition-enter-active {
+  transition: all .5s;
+}
+
+.attr-transition-enter,
+.attr-transition-leave-active {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.attr-transition-leave-active {
+  position: absolute;
+}

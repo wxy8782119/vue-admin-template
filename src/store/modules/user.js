@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import { Message } from 'element-ui'
 
 const getDefaultState = () => {
   return {
@@ -34,6 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
+        Message.success(response.message)
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
@@ -68,6 +70,7 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
+        Message.success('退出成功')
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
