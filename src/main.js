@@ -18,6 +18,7 @@ import '@/permission' // permission control
 import API from '@/api'
 
 import CategorySelect from '@/components/CategorySelect'
+import HintButton from '@/components/HintButton'
 
 /**
  * If you don't want to use mock-server
@@ -43,6 +44,7 @@ Vue.prototype.$API = API
 
 // 注册全局组件
 Vue.component(CategorySelect.name, CategorySelect)
+Vue.component(HintButton.name, HintButton)
 
 new Vue({
   el: '#app',
