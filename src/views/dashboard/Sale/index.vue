@@ -1,0 +1,249 @@
+<template>
+  <el-card class="box-card" style="margin: 10px 0">
+    <div slot="header" class="clearfix">
+      <!--  @tab-click="handleClick" -->
+      <el-tabs v-model="activeName" class="tab">
+        <el-tab-pane label="销售额" name="sale" />
+        <el-tab-pane label="访问量" name="visits" />
+      </el-tabs>
+      <div class="right">
+        <span @click="setDay">今日</span>
+        <span @click="setWeek">本周</span>
+        <span @click="setMonth">本月</span>
+        <span @click="setYear">本年</span>
+        <el-date-picker
+          v-model="date"
+          class="date"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          size="mini"
+          value-format="yyyy-MM-dd"
+        />
+      </div>
+    </div>
+    <div>
+      <el-row :gutter="10">
+        <el-col :span="18">
+          <div ref="charts" class="charts" />
+        </el-col>
+        <el-col :span="6">
+          <span style="font-size: 18px;font-weight: bold;">门店{{ title }}排名</span>
+          <ul>
+            <li>
+              <span class="rindex">1</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">10000</span>
+            </li>
+            <li>
+              <span class="rindex">2</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">9000</span>
+            </li>
+            <li>
+              <span class="rindex">3</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">4</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">5</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">6</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">7</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">8</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">9</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+            <li>
+              <span class="rindex1">10</span>
+              <span class="rname">肯德基</span>
+              <span class="rvalue">8000</span>
+            </li>
+          </ul>
+        </el-col>
+      </el-row>
+    </div>
+  </el-card>
+</template>
+
+<script>
+import echarts from 'echarts'
+import dayjs from 'dayjs'
+export default {
+  name: 'Sale',
+  data() {
+    return {
+      activeName: 'sale',
+      myCharts: null,
+      date: []
+    }
+  },
+  computed: {
+    title() {
+      return this.activeName === 'sale' ? '销售额' : '访问量'
+    }
+  },
+  watch: {
+    title() {
+      this.myCharts.setOption({
+        title: {
+          text: this.title + '趋势'
+        },
+        series: [
+          {
+            name: 'Direct',
+            type: 'bar',
+            barWidth: '60%',
+            data: this.activeName === 'sale' ? [150, 200, 100, 334, 220, 152, 390, 330, 110, 200, 334, 390, 330] : [150, 200, 334, 100, 220, 110, 390, 330, 200, 334, 390, 152, 330],
+            color: 'yellowgreen'
+          }
+        ]
+      })
+    }
+  },
+  mounted() {
+    this.myCharts = echarts.init(this.$refs.charts)
+    this.myCharts.setOption({
+      title: {
+        text: this.title + '趋势'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          axisTick: {
+            alignWithLabel: true
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: 'Direct',
+          type: 'bar',
+          barWidth: '60%',
+          data: [150, 200, 100, 334, 220, 152, 390, 330, 110, 200, 334, 390, 330],
+          color: 'yellowgreen'
+        }
+      ]
+    })
+  },
+  methods: {
+    setDay() {
+      const day = dayjs().format('YYYY-MM-DD')
+      this.date = [day, day]
+    },
+    setWeek() {
+      const start = dayjs().day(1).format('YYYY-MM-DD')
+      const end = dayjs().day(7).format('YYYY-MM-DD')
+      this.date = [start, end]
+    },
+    setMonth() {
+      const start = dayjs().startOf('month').format('YYYY-MM-DD')
+      const end = dayjs().endOf('month').format('YYYY-MM-DD')
+      this.date = [start, end]
+    },
+    setYear() {
+      const start = dayjs().startOf('year').format('YYYY-MM-DD')
+      const end = dayjs().endOf('year').format('YYYY-MM-DD')
+      this.date = [start, end]
+    }
+  }
+}
+</script>
+
+<style scoped>
+.clearfix {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.tab {
+  width: 100%;
+}
+.right {
+  position: absolute;
+  right: 0;
+}
+.date{
+    width: 250px;
+    margin: 0 20px;
+}
+.right span{
+    margin: 0 5px;
+    font-size: 15px;
+}
+.charts{
+    width: 100%;
+    height: 360px;
+}
+ul{
+    list-style: none;
+    width: 100%;
+    height: 300px;
+    padding: 0;
+}
+ul li{
+    height: 8%;
+    margin:10px 0;
+}
+.rindex{
+    float: left;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: black;
+    color: white;
+    text-align: center;
+}
+.rindex1{
+    float: left;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
+.rname{
+    margin: 0 20px;
+}
+.rvalue{
+    float: right;
+}
+</style>
