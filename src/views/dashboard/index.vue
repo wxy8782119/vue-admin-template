@@ -15,6 +15,9 @@ export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
     Card, Sale, Observe
+  },
+  mounted() {
+    this.$store.dispatch('getData')
   }
 }
 </script>

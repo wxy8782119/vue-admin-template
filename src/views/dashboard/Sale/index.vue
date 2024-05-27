@@ -91,6 +91,7 @@
 <script>
 import echarts from 'echarts'
 import dayjs from 'dayjs'
+import { mapState } from 'vuex'
 export default {
   name: 'Sale',
   data() {
@@ -103,7 +104,10 @@ export default {
   computed: {
     title() {
       return this.activeName === 'sale' ? '销售额' : '访问量'
-    }
+    },
+    ...mapState({
+      listState: state => state.home.list
+    })
   },
   watch: {
     title() {
@@ -111,12 +115,57 @@ export default {
         title: {
           text: this.title + '趋势'
         },
+        xAxis: {
+          data: this.activeName === 'sale' ? this.listState.orderFullYearAxis : this.listState.userFullYearAxis
+        },
         series: [
           {
             name: 'Direct',
             type: 'bar',
             barWidth: '60%',
-            data: this.activeName === 'sale' ? [150, 200, 100, 334, 220, 152, 390, 330, 110, 200, 334, 390, 330] : [150, 200, 334, 100, 220, 110, 390, 330, 200, 334, 390, 152, 330],
+            data: this.activeName === 'sale' ? this.listState.orderFullYear : this.listState.userFullYear,
+            color: 'yellowgreen'
+          }
+        ]
+      })
+    },
+    listState() {
+      this.myCharts.setOption({
+        title: {
+          text: this.title + '趋势'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: this.listState.orderFullYearAxis,
+            axisTick: {
+              alignWithLabel: true
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: 'Direct',
+            type: 'bar',
+            barWidth: '60%',
+            data: this.listState.orderFullYear,
             color: 'yellowgreen'
           }
         ]
@@ -144,7 +193,7 @@ export default {
       xAxis: [
         {
           type: 'category',
-          data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+          data: [],
           axisTick: {
             alignWithLabel: true
           }
@@ -160,7 +209,7 @@ export default {
           name: 'Direct',
           type: 'bar',
           barWidth: '60%',
-          data: [150, 200, 100, 334, 220, 152, 390, 330, 110, 200, 334, 390, 330],
+          data: [],
           color: 'yellowgreen'
         }
       ]

@@ -36,7 +36,6 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // before: require('./mock/mock-server.js'),
     // 配置代理跨域
     proxy: {
       '/dev-api/admin/acl/': {
@@ -52,6 +51,8 @@ module.exports = {
         }
       }
     },
+    // 开启mock数据
+    // before: require('./mock/mock-server.js')
     after: require('./mock/mock-server.js')
   },
   configureWebpack: {
