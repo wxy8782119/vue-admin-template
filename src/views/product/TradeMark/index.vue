@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 10px">
-    <el-button type="primary" icon="el-icon-plus" style="margin: 10px 0" @click="showDialog">添加</el-button>
+    <el-button v-if="$store.state.user.buttons.indexOf('btn.Trademark.add') !== -1" type="primary" icon="el-icon-plus" style="margin: 10px 0" @click="showDialog">添加</el-button>
     <el-table v-loading="listLoading" style="width: 100%" border :data="list" element-loading-text="数据正在加载中...">
       <el-table-column type="index" label="序号" width="80" align="center" />
       <el-table-column prop="tmName" label="品牌名称" />
@@ -11,8 +11,8 @@
       </el-table-column>
       <el-table-column prop="prop" label="操作">
         <template slot-scope="{row}">
-          <el-button type="warning" icon="el-icon-edit" size="mini" @click="updateTradeMark(row)">修改</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTradeMark(row)">删除</el-button>
+          <el-button v-if="$store.state.user.buttons.indexOf('btn.Trademark.update') !== -1" type="warning" icon="el-icon-edit" size="mini" @click="updateTradeMark(row)">修改</el-button>
+          <el-button v-if="$store.state.user.buttons.indexOf('btn.Trademark.remove') !== -1" type="danger" icon="el-icon-delete" size="mini" @click="deleteTradeMark(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

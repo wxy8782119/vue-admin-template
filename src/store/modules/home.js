@@ -12,7 +12,6 @@ export default {
   actions: {
     async getData({ commit }) {
       const result = await mockRequest.get('/home/list')
-      console.log(result)
       if (result.code === 20000) {
         commit('GETDATA', result.data)
       }
